@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:twilio="http://www.mulesoft.org/schema/mule/twilio"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/twilio http://www.mulesoft.org/schema/mule/twilio/current/mule-twilio.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<twilio:config name="Twilio_Connector_Config" doc:name="Twilio Connector Config" doc:id="482b1f3b-83e5-45d6-8dca-aa56f65017e4" >
+		<twilio:account-sid-auth-token-connection username="${secure::twilio.username}" password="${secure::twilio.password}" baseUri="${twilio.host}"/>
+	</twilio:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="104a4ce8-4cf2-4ad2-9202-14c3469310e6" file="properties/config.properties" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="bbd9c17b-d046-4f98-a1cb-2e96cb4853f5" file="config.properties" key="mstr142857142857" >
+	</secure-properties:config>
+</mule>

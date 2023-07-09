@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:twilio="http://www.mulesoft.org/schema/mule/twilio"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/twilio http://www.mulesoft.org/schema/mule/twilio/current/mule-twilio.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bfdff320-c26e-4118-93a9-88604b4edcf5" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="whatsappFlow" doc:id="47735889-1b26-449a-9cdd-57f83898d330" >
+		<http:listener doc:name="Listener" doc:id="23ec639a-79d6-4c4b-adc3-5db18c3f7eed" config-ref="HTTP_Listener_config" path="/twilio"/>
+		<ee:transform doc:name="Transform Message" doc:id="4ca3ab55-94e5-49a6-8093-3a2f6626ef64" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/x-www-form-urlencoded
+---
+{
+	"From": p('twilio.whatsapp'),
+	"To": payload.contact,
+	"Body": payload.message
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<twilio:create20100401-accounts-messagesjson-by-account-sid doc:name="Create Message" doc:id="ff46c4e3-f195-46a6-b1bd-5fc7c0cfd305" config-ref="Twilio_Connector_Config" accountSid="ACee9c7f22bc0e5392dda3b0e55ec173be"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7a6e8afd-aed6-4c1e-ae36-695ddf890bf1" message="#[payload]"/>
+	</flow>
+</mule>
